@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+/* Floodlight palette. Pitch (deep green-black) and Chalk carry the page; Flare (the orange
+   from the club crest) marks actions and the numbers that matter. */
+@theme {
+  --color-pitch: #0b1611;
+  --color-pitch-2: #12211a;
+  --color-pitch-3: #1a2e24;
+  --color-chalk: #f3f0e8;
+  --color-chalk-2: #e8e3d7;
+  --color-flare: #ff5a1f;
+  --color-flare-deep: #c43d0c;
+  --color-turf: #2f8f5b;
+  --color-mist: #9fb0a6;
+  --color-ash: #5b6560;
+  --color-line: rgb(243 240 232 / 0.12);
+
+  --font-display: "Big Shoulders Display Variable", "Oswald", Impact, sans-serif;
+  --font-sans: "Geist Variable", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+html {
+  background: var(--color-pitch);
+  color: var(--color-chalk);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-pitch);
+}
+
+::selection {
+  background: var(--color-flare);
+  color: var(--color-pitch);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-flare);
+  outline-offset: 3px;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+
+@layer components {
+.wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 48px);
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.88;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Buttons: step on hover, press on click. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 52px;
+  padding-inline: 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  transition:
+    transform 180ms var(--ease-out),
+    background-color 180ms var(--ease-out),
+    color 180ms var(--ease-out),
+    box-shadow 180ms var(--ease-out);
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+.btn-flare {
+  background: var(--color-flare);
+  color: #140803;
+  box-shadow: 0 10px 30px -12px rgb(255 90 31 / 0.7);
+}
+.btn-flare:hover {
+  background: #ff6d37;
+}
+.btn-ghost {
+  border: 1px solid currentColor;
+}
+.btn-ghost:hover {
+  background: var(--color-chalk);
+  color: var(--color-pitch);
+  border-color: var(--color-chalk);
+}
+.btn .arrow {
+  transition: transform 180ms var(--ease-out);
+}
+.btn:hover .arrow {
+  transform: translateX(3px);
+}
+
+/* Photos zoom gently inside their frame. */
+.photo {
+  overflow: hidden;
+  position: relative;
+}
+.photo img {
+  transition: transform 700ms var(--ease-out);
+}
+.photo:hover img {
+  transform: scale(1.03);
+}
+
+/* Cards lift 2px. */
+.lift {
+  transition:
+    transform 220ms var(--ease-out),
+    border-color 220ms var(--ease-out),
+    background-color 220ms var(--ease-out);
+}
+.lift:hover {
+  transform: translateY(-2px);
+}
+
+/* Link underline draws in. */
+.ulink {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1.5px no-repeat;
+  transition: background-size 260ms var(--ease-out);
+}
+.ulink:hover {
+  background-size: 100% 1.5px;
+}
+
+}
+
+/* Pitch markings drawn in CSS for the dark grounds. */
+.pitch-lines {
+  background-image:
+    linear-gradient(rgb(243 240 232 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(243 240 232 / 0.05) 1px, transparent 1px);
+  background-size: 96px 96px;
+}
+
+/* Flywheel pulse travelling along the model line. */
+@keyframes run {
+  from {
+    stroke-dashoffset: 400;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.pulse-line {
+  stroke-dasharray: 40 360;
+  animation: run 3.2s linear infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  animation: marquee 38s linear infinite;
+}
+.marquee-host:hover .marquee {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
